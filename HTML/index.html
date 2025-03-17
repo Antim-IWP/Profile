@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Responsive Navbar with Toggle Modes</title>
+  <title>Responsive Navbar Example</title>
   <style>
-    /* Base Theme Variables */
+    /* Base Theme (Light) */
     :root {
       --bg-color: #ffffff;
       --text-color: #000000;
       --nav-bg: rgba(255, 255, 255, 0.95);
       --hover-color: #ff5733;
     }
-    /* Dark Mode Variables */
+    /* Dark Mode */
     .dark-mode {
       --bg-color: #121212;
       --text-color: #ffffff;
@@ -20,12 +20,8 @@
       --hover-color: #ffcc00;
     }
     /* Global Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
     body {
+      margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
@@ -45,7 +41,7 @@
       align-items: center;
       padding: 10px 20px;
       z-index: 1000;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       backdrop-filter: blur(10px);
     }
     .nav-logo {
@@ -59,7 +55,7 @@
       align-items: center;
       gap: 20px;
     }
-    /* Theme Toggle (Always visible) */
+    /* Theme Toggle Button (always visible) */
     .theme-toggle {
       background: transparent;
       border: none;
@@ -68,24 +64,8 @@
       color: var(--text-color);
       transition: color 0.3s;
     }
-    /* Desktop Menu Toggle Button */
-    .menu-toggle-desktop {
-      font-size: 1.2rem;
-      cursor: pointer;
-      color: var(--text-color);
-      background: transparent;
-      border: 1px solid var(--text-color);
-      padding: 5px 10px;
-      border-radius: 5px;
-      display: none;
-      transition: background 0.3s;
-    }
-    .menu-toggle-desktop:hover {
-      background: var(--hover-color);
-      color: var(--bg-color);
-    }
-    /* Mobile Menu Toggle Icon */
-    .menu-toggle-mobile {
+    /* Mobile Menu Icon */
+    .menu-icon {
       font-size: 2rem;
       cursor: pointer;
       color: var(--text-color);
@@ -93,44 +73,21 @@
       transition: transform 0.3s;
       z-index: 1100;
     }
-    /* Navigation Links (Desktop & Mobile) */
+    /* Navigation Links (Desktop View) */
     .nav-links {
       display: flex;
       gap: 20px;
       list-style: none;
-      /* Hidden by default for toggle mode */
-      position: fixed;
-      top: 0;
-      right: -300px;
-      width: 250px;
-      height: 100vh;
-      background-color: var(--nav-bg);
-      padding-top: 70px;
-      box-shadow: -2px 0 5px rgba(0,0,0,0.2);
-      transition: right 0.4s ease-in-out;
-      z-index: 1000;
-    }
-    .nav-links.active {
-      right: 0;
-    }
-    .nav-links li {
-      text-align: center;
-      padding: 15px;
-      opacity: 0;
-      transform: translateX(50px);
-      transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-    }
-    .nav-links.active li {
-      opacity: 1;
-      transform: translateX(0);
     }
     .nav-links li a {
       color: var(--text-color);
       text-decoration: none;
       font-size: 1rem;
+      padding: 10px;
       position: relative;
       transition: color 0.3s;
     }
+    /* Underline Animation for Links */
     .nav-links li a::after {
       content: "";
       position: absolute;
@@ -145,38 +102,41 @@
       width: 100%;
       left: 0;
     }
-    /* Responsive Styles */
-    @media (min-width: 769px) {
-      /* Desktop: Show desktop toggle, hide mobile icon */
-      .menu-toggle-desktop {
+    /* Responsive: Mobile View */
+    @media (max-width: 768px) {
+      .menu-icon {
         display: block;
       }
-      .menu-toggle-mobile {
-        display: none;
-      }
-      /* Hide nav-links by default on desktop (toggle mode) */
+      /* Hide nav-links by default on mobile */
       .nav-links {
-        right: -300px;
         flex-direction: column;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 250px;
+        height: 100vh;
+        background-color: var(--nav-bg);
+        padding-top: 70px;
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+        transition: right 0.4s ease-in-out;
+        z-index: 1000;
       }
       .nav-links.active {
         right: 0;
       }
-    }
-    @media (max-width: 768px) {
-      /* Mobile: Show hamburger icon, hide desktop toggle */
-      .menu-toggle-desktop {
-        display: none;
+      .nav-links li {
+        text-align: center;
+        padding: 15px;
+        opacity: 0;
+        transform: translateX(50px);
+        transition: opacity 0.4s ease-out, transform 0.4s ease-out;
       }
-      .menu-toggle-mobile {
-        display: block;
-      }
-      /* Nav-links for mobile remain same as desktop toggle mode */
-      .nav-links {
-        flex-direction: column;
+      .nav-links.active li {
+        opacity: 1;
+        transform: translateX(0);
       }
     }
-    /* Backdrop Overlay for Mobile/Desktop Menu */
+    /* Backdrop Overlay for Mobile */
     .overlay {
       display: none;
       position: fixed;
@@ -199,15 +159,14 @@
   </style>
 </head>
 <body>
+
   <!-- Navbar -->
   <nav class="navbar">
     <a href="#profile" class="nav-logo">Antim Pal</a>
     <div class="nav-right">
-      <!-- Desktop Toggle (shows on desktop) -->
-      <button class="menu-toggle-desktop" onclick="toggleMenu()">Menu</button>
-      <!-- Mobile Toggle (shows on mobile) -->
-      <span class="menu-toggle-mobile" onclick="toggleMenu()">☰</span>
+      <!-- In desktop view, nav-links are always visible; only mobile shows the menu icon -->
       <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+      <span class="menu-icon" onclick="toggleMenu()">☰</span>
     </div>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
@@ -219,48 +178,44 @@
     </ul>
   </nav>
 
-  <!-- Backdrop (for closing menu by clicking outside) -->
+  <!-- Backdrop Overlay for Mobile Menu -->
   <div class="overlay" onclick="toggleMenu()"></div>
 
   <!-- Demo Content -->
   <div class="content">
     <h1>Welcome to My Website</h1>
-    <p>This is a demo page for a responsive navbar with dynamic toggles.</p>
+    <p>This is a demo page for a responsive navbar that shows all menus on desktop and uses a hamburger icon on mobile.</p>
   </div>
 
   <script>
     let menuOpen = false;
     let darkMode = false;
 
-    // Toggle Theme Function
+    // Toggle Theme
     function toggleTheme() {
       document.body.classList.toggle("dark-mode");
       darkMode = !darkMode;
       document.querySelector(".theme-toggle").innerHTML = darkMode ? "☀" : "🌙";
     }
 
-    // Toggle Menu Function
+    // Toggle Mobile Menu
     function toggleMenu() {
       const navLinks = document.querySelector(".nav-links");
+      const menuIcon = document.querySelector(".menu-icon");
       const overlay = document.querySelector(".overlay");
-      // Use desktop toggle if available, otherwise mobile icon
-      const desktopToggle = document.querySelector(".menu-toggle-desktop");
-      const mobileToggle = document.querySelector(".menu-toggle-mobile");
       
       menuOpen = !menuOpen;
       if (menuOpen) {
         navLinks.classList.add("active");
         overlay.classList.add("active");
-        // Change text/icon accordingly
-        if (desktopToggle) desktopToggle.textContent = "✖";
-        if (mobileToggle) mobileToggle.innerHTML = "✖";
+        menuIcon.innerHTML = "✖"; // Change to cross icon
       } else {
         navLinks.classList.remove("active");
         overlay.classList.remove("active");
-        if (desktopToggle) desktopToggle.textContent = "Menu";
-        if (mobileToggle) mobileToggle.innerHTML = "☰";
+        menuIcon.innerHTML = "☰"; // Back to hamburger icon
       }
     }
   </script>
+
 </body>
 </html>
