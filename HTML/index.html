@@ -1,42 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Responsive Navbar</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Navbar with Toggle Modes</title>
   <style>
-    /* Default Light Mode */
+    /* Base Theme Variables */
     :root {
       --bg-color: #ffffff;
       --text-color: #000000;
-      --nav-bg: rgba(255, 255, 255, 0.9);
-      --button-bg: #000000;
-      --button-color: #ffffff;
+      --nav-bg: rgba(255, 255, 255, 0.95);
       --hover-color: #ff5733;
     }
-
-    /* Dark Mode */
+    /* Dark Mode Variables */
     .dark-mode {
       --bg-color: #121212;
       --text-color: #ffffff;
-      --nav-bg: rgba(26, 26, 26, 0.9);
-      --button-bg: #ffffff;
-      --button-color: #121212;
+      --nav-bg: rgba(26, 26, 26, 0.95);
       --hover-color: #ffcc00;
     }
-
-    /* Global Styling */
-    body {
+    /* Global Styles */
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
       transition: background-color 0.3s, color 0.3s;
-      padding-top: 60px; /* Space for fixed navbar */
+      padding-top: 70px; /* Space for fixed navbar */
       overflow-x: hidden;
     }
-
-    /* Navbar */
+    /* Navbar Styles */
     .navbar {
       position: fixed;
       top: 0;
@@ -48,26 +45,21 @@
       align-items: center;
       padding: 10px 20px;
       z-index: 1000;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       backdrop-filter: blur(10px);
     }
-
-    /* Logo */
     .nav-logo {
       font-size: 1.8rem;
       font-weight: bold;
       color: var(--text-color);
       text-decoration: none;
     }
-
-    /* Right Side (Theme Toggle + Menu Icon) */
     .nav-right {
       display: flex;
       align-items: center;
       gap: 20px;
     }
-
-    /* Theme Toggle Button */
+    /* Theme Toggle (Always visible) */
     .theme-toggle {
       background: transparent;
       border: none;
@@ -76,44 +68,69 @@
       color: var(--text-color);
       transition: color 0.3s;
     }
-
-    /* Menu Icon (Hidden on Desktop) */
-    .menu-icon {
+    /* Desktop Menu Toggle Button */
+    .menu-toggle-desktop {
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--text-color);
+      background: transparent;
+      border: 1px solid var(--text-color);
+      padding: 5px 10px;
+      border-radius: 5px;
+      display: none;
+      transition: background 0.3s;
+    }
+    .menu-toggle-desktop:hover {
+      background: var(--hover-color);
+      color: var(--bg-color);
+    }
+    /* Mobile Menu Toggle Icon */
+    .menu-toggle-mobile {
       font-size: 2rem;
       cursor: pointer;
       color: var(--text-color);
-      display: none; /* Default: Hidden */
+      display: none;
       transition: transform 0.3s;
       z-index: 1100;
     }
-
-    /* Navigation Links (Desktop) */
+    /* Navigation Links (Desktop & Mobile) */
     .nav-links {
       display: flex;
       gap: 20px;
       list-style: none;
+      /* Hidden by default for toggle mode */
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 250px;
+      height: 100vh;
+      background-color: var(--nav-bg);
+      padding-top: 70px;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+      transition: right 0.4s ease-in-out;
+      z-index: 1000;
     }
-
+    .nav-links.active {
+      right: 0;
+    }
     .nav-links li {
-      position: relative;
-      opacity: 0.9;
-      transition: opacity 0.3s ease-in-out;
+      text-align: center;
+      padding: 15px;
+      opacity: 0;
+      transform: translateX(50px);
+      transition: opacity 0.4s ease-out, transform 0.4s ease-out;
     }
-
-    .nav-links li:hover {
+    .nav-links.active li {
       opacity: 1;
+      transform: translateX(0);
     }
-
     .nav-links li a {
       color: var(--text-color);
       text-decoration: none;
       font-size: 1rem;
-      padding: 10px;
       position: relative;
       transition: color 0.3s;
     }
-
-    /* Underline Animation */
     .nav-links li a::after {
       content: "";
       position: absolute;
@@ -124,78 +141,73 @@
       background-color: var(--hover-color);
       transition: width 0.3s ease-out, left 0.3s ease-out;
     }
-
     .nav-links li a:hover::after {
       width: 100%;
       left: 0;
     }
-
-    /* Mobile Navigation */
-    @media (max-width: 768px) {
-      .menu-icon {
-        display: block; /* Show Menu Icon in Mobile View */
+    /* Responsive Styles */
+    @media (min-width: 769px) {
+      /* Desktop: Show desktop toggle, hide mobile icon */
+      .menu-toggle-desktop {
+        display: block;
       }
-
+      .menu-toggle-mobile {
+        display: none;
+      }
+      /* Hide nav-links by default on desktop (toggle mode) */
       .nav-links {
-        display: flex;
+        right: -300px;
         flex-direction: column;
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 250px;
-        height: 100vh;
-        background-color: var(--nav-bg);
-        padding-top: 70px;
-        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
-        transition: right 0.4s ease-in-out;
-        z-index: 1000;
       }
-
       .nav-links.active {
         right: 0;
       }
-
-      .nav-links li {
-        text-align: center;
-        padding: 15px;
-        opacity: 0;
-        transform: translateX(50px);
-        transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-      }
-
-      /* Slide-in effect */
-      .nav-links.active li {
-        opacity: 1;
-        transform: translateX(0);
-      }
-
-      /* Backdrop Overlay */
-      .overlay {
+    }
+    @media (max-width: 768px) {
+      /* Mobile: Show hamburger icon, hide desktop toggle */
+      .menu-toggle-desktop {
         display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 900;
-        transition: opacity 0.3s ease;
       }
-
-      .overlay.active {
+      .menu-toggle-mobile {
         display: block;
       }
+      /* Nav-links for mobile remain same as desktop toggle mode */
+      .nav-links {
+        flex-direction: column;
+      }
+    }
+    /* Backdrop Overlay for Mobile/Desktop Menu */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 900;
+      transition: opacity 0.3s ease;
+    }
+    .overlay.active {
+      display: block;
+    }
+    /* Demo Content */
+    .content {
+      text-align: center;
+      padding: 20px;
     }
   </style>
 </head>
 <body>
-
   <!-- Navbar -->
   <nav class="navbar">
     <a href="#profile" class="nav-logo">Antim Pal</a>
     <div class="nav-right">
+      <!-- Desktop Toggle (shows on desktop) -->
+      <button class="menu-toggle-desktop" onclick="toggleMenu()">Menu</button>
+      <!-- Mobile Toggle (shows on mobile) -->
+      <span class="menu-toggle-mobile" onclick="toggleMenu()">☰</span>
       <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
-      <span class="menu-icon" onclick="toggleMenu()">☰</span> <!-- Only in Mobile View -->
     </div>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
@@ -213,14 +225,14 @@
   <!-- Demo Content -->
   <div class="content">
     <h1>Welcome to My Website</h1>
-    <p>This is a demo page for a responsive navbar with animations and theme toggle.</p>
+    <p>This is a demo page for a responsive navbar with dynamic toggles.</p>
   </div>
 
   <script>
     let menuOpen = false;
     let darkMode = false;
 
-    // Toggle Theme
+    // Toggle Theme Function
     function toggleTheme() {
       document.body.classList.toggle("dark-mode");
       darkMode = !darkMode;
@@ -230,22 +242,25 @@
     // Toggle Menu Function
     function toggleMenu() {
       const navLinks = document.querySelector(".nav-links");
-      const menuIcon = document.querySelector(".menu-icon");
       const overlay = document.querySelector(".overlay");
+      // Use desktop toggle if available, otherwise mobile icon
+      const desktopToggle = document.querySelector(".menu-toggle-desktop");
+      const mobileToggle = document.querySelector(".menu-toggle-mobile");
       
       menuOpen = !menuOpen;
-
       if (menuOpen) {
         navLinks.classList.add("active");
         overlay.classList.add("active");
-        menuIcon.innerHTML = "✖"; // Change to cross icon
+        // Change text/icon accordingly
+        if (desktopToggle) desktopToggle.textContent = "✖";
+        if (mobileToggle) mobileToggle.innerHTML = "✖";
       } else {
         navLinks.classList.remove("active");
         overlay.classList.remove("active");
-        menuIcon.innerHTML = "☰"; // Back to hamburger
+        if (desktopToggle) desktopToggle.textContent = "Menu";
+        if (mobileToggle) mobileToggle.innerHTML = "☰";
       }
     }
   </script>
-
 </body>
 </html>
