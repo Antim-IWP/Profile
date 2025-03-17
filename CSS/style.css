@@ -1,0 +1,126 @@
+/* CSS Variables for Theme Colors */
+:root {
+     --nav-bg: #ffffff;
+     --text-color: #000000;
+     --accent-color: #61dafb;
+}
+
+/* Dark Mode Variables */
+.dark-mode {
+     --nav-bg: #1a1a1a;
+     --text-color: #ffffff;
+}
+
+/* Reset & Base Styles */
+* {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+}
+
+body {
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     background: var(--nav-bg);
+     color: var(--text-color);
+     transition: background 0.3s, color 0.3s;
+     padding-top: 70px;
+     /* Reserve space for fixed navbar */
+}
+
+/* Navbar Styles */
+.navbar {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     background-color: var(--nav-bg);
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     padding: 10px 20px;
+     z-index: 100;
+     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.nav-logo {
+     font-size: 1.8rem;
+     font-weight: bold;
+     color: var(--text-color);
+     text-decoration: none;
+}
+
+.nav-links {
+     display: flex;
+     gap: 20px;
+     list-style: none;
+}
+
+.nav-links li a {
+     color: var(--text-color);
+     text-decoration: none;
+     font-size: 1rem;
+     padding: 10px;
+     transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+     color: var(--accent-color);
+}
+
+.theme-toggle {
+     background: transparent;
+     border: none;
+     font-size: 1.5rem;
+     cursor: pointer;
+     color: var(--text-color);
+     transition: color 0.3s ease;
+}
+
+/* Mobile Menu */
+.menu-toggle {
+     display: none;
+}
+
+.hamburger {
+     display: none;
+     font-size: 2rem;
+     cursor: pointer;
+     color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+     .nav-links {
+          flex-direction: column;
+          position: absolute;
+          top: 60px;
+          left: 0;
+          width: 100%;
+          background-color: var(--nav-bg);
+          text-align: center;
+          display: none;
+     }
+
+     .menu-toggle:checked+.hamburger+.nav-links {
+          display: flex;
+     }
+
+     .hamburger {
+          display: block;
+     }
+}
+
+/* Section Styles */
+.section {
+     padding: 60px 20px;
+     max-width: 1200px;
+     margin: 0 auto;
+}
+
+.profile-section {
+     text-align: center;
+}
+
+h1,
+h2 {
+     margin-bottom: 20px;
+}
