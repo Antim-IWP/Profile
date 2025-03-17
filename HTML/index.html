@@ -1,11 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Antim-GitHub-Profile</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Navbar with Theme Toggle</title>
+  <style>
+    /* CSS Variables for Light Theme */
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --nav-bg: #f1f1f1;
+      --button-bg: #000000;
+      --button-color: #ffffff;
+    }
+    /* Dark Mode Variables */
+    .dark-mode {
+      --bg-color: #121212;
+      --text-color: #ffffff;
+      --nav-bg: #1a1a1a;
+      --button-bg: #ffffff;
+      --button-color: #121212;
+    }
+    /* Global Styles */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+      padding-top: 70px; /* Space for fixed navbar */
+    }
+    /* Navbar Container */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--nav-bg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      z-index: 100;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    /* Logo */
+    .nav-logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--text-color);
+      text-decoration: none;
+    }
+    /* Navigation Right Side */
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    /* Menu Icon (Hamburger) */
+    .menu-icon {
+      font-size: 2rem;
+      cursor: pointer;
+      color: var(--text-color);
+      display: none;
+    }
+    /* Theme Toggle Button */
+    .theme-toggle {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-color);
+      transition: color 0.3s ease;
+    }
+    /* Navigation Links (Desktop) */
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+    .nav-links li a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 10px;
+      transition: color 0.3s;
+    }
+    .nav-links li a:hover {
+      color: var(--button-bg);
+    }
+    /* Responsive: Show hamburger on small screens, hide desktop links */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background-color: var(--nav-bg);
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      }
+      .menu-icon {
+        display: block;
+      }
+    }
+    /* Mobile Menu Active */
+    .nav-links.active {
+      display: flex;
+    }
+    /* Content Demo */
+    .content {
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
-     
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="#profile" class="nav-logo">Antim Pal</a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#tech-stack">Skills</a></li>
+        <li><a href="#top-repos">Projects</a></li>
+        <li><a href="#youtube">YouTube</a></li>
+        <li><a href="#stats">Stats</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <span class="menu-icon" onclick="toggleMenu()">&#9776;</span>
+      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+    </div>
+  </nav>
+
+  <!-- Demo Content -->
+  <div class="content">
+    <h1>Welcome to My Website</h1>
+    <p>This is a demo page for a responsive navbar with a theme toggle.</p>
+  </div>
+
+  <script>
+    // Toggle Theme Functionality
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+    // Toggle Mobile Menu
+    function toggleMenu() {
+      const navLinks = document.querySelector('.nav-links');
+      navLinks.classList.toggle('active');
+    }
+  </script>
 </body>
 </html>
